@@ -1,0 +1,28 @@
+46. Permutations
+void permute(vector<vector<int>> &op, vector<int> tmp, vector<int>& nums, vector<bool> flg )
+{
+    if(tmp.size() == nums.size())
+    {
+        op.push_back(tmp);
+    }
+    for(int i=0; i<nums.size(); i++)
+    {
+        if(flg[i] == false)
+        {
+            tmp.push_back(nums[i]);
+            flg[i] = true;
+            permute(op, tmp, nums, flg);
+            tmp.pop_back();
+            flg[i]= false;
+        }
+    }
+}
+
+vector<vector<int>> permute(vector<int>& nums) 
+{
+    vector<vector<int>> op;
+    vector<int> tmp;
+    vector<bool> flg(nums.size(), false);
+    permute(op, tmp, nums, flg);
+    return op;
+}

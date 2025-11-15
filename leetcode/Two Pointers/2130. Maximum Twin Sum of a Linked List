@@ -1,0 +1,140 @@
+2130. Maximum Twin Sum of a Linked List
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void helper(int& max, ListNode* head, ListNode** start)
+    {
+        if(head)
+        {
+            helper(max, head->next, start);
+            if(max < head->val+(*start)->val)
+            {
+                max = head->val+(*start)->val;
+            }
+            *start = (*start)->next;
+        }
+    }
+    int pairSum(ListNode* head) 
+    {
+        int max=0;
+        ListNode* start = head;
+        helper(max, head , &start);
+        return max;    
+    }
+};
+
+
+int main()
+{
+	//head = [5,4,2,1]
+	ListNode* head = new ListNode(5);
+    addNode(4,head);
+    addNode(2,head);
+    addNode(1,head);
+    cout<<pairSum(head);
+	return 0;
+}
+
+Remarks:
+Same combination comapred twice
+
+========================================================================
+Method 2:
+========
+int pairSum(ListNode* head) 
+    {
+        int max=0;
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while(fast)
+        {
+            fast = fast->next->next;
+            slow = slow->next;
+        } 
+
+        ListNode *prev = nullptr;
+        ListNode *next = nullptr;
+
+        while(slow)
+        {
+            next = slow->next;
+            slow->next = prev;
+            prev = slow;
+            slow = next;
+        }
+
+        while(prev)
+        {
+            max = std::max(max, head->val+prev->val);
+            head= head->next;
+            prev = prev->next;
+        }
+        return max;      
+    }
+========================================================================
+
+ int pairSum(ListNode* head) 
+{
+    int max=0;
+    ListNode* slow = head;
+    ListNode* fast = head;
+    ListNode *prev = nullptr;
+    ListNode *curr = nullptr;
+    while(fast)
+    {
+        fast = fast->next->next;
+        
+        curr = slow;
+
+        slow = slow->next;
+
+        curr->next = prev;
+
+        prev = curr;
+
+    } 
+
+    while(slow)
+    {
+        max = std::max(max, slow->val+prev->val);
+        slow = slow->next;
+        prev = prev->next;
+    }
+    return max;      
+}
+========================================================================
+int pairSum(ListNode* head) 
+{
+    int max=0;
+    ListNode* slow = head;
+    ListNode* fast = head;
+    ListNode *prev = nullptr;
+    ListNode *curr = nullptr;
+    stack<ListNode*> Stack;
+    while(fast)
+    {
+        Stack.push(slow);
+        fast = fast->next->next;
+        slow = slow->next;
+    } 
+
+    while(slow)
+    {
+        ListNode *obj = Stack.top(); Stack.pop();
+        max = std::max(max, slow->val+obj->val);
+        slow = slow->next;
+    }
+    return max;      
+}
+========================================================================

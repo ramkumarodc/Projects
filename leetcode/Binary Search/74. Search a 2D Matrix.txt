@@ -1,0 +1,78 @@
+74. Search a 2D Matrix
+Method1:
+========
+bool searchMatrix(vector<vector<int>>& nums, int target) 
+{
+    int nor = nums.size();
+    int noc = nums[0].size();
+    int lo = 0;
+    int hi = nor-1;
+    
+    while(lo<=hi)
+    {
+        int m = (lo+hi)/2;
+        if(target > nums[m][noc-1])
+        {
+            lo = m+1;
+        }
+        else if(target < nums[m][0])
+        {
+            hi = m-1;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    int ridx = (lo+hi)/2;
+    lo = 0;
+    hi = noc-1;
+    while(lo<=hi)
+    {
+        int m = (lo+hi)/2;
+
+        if(nums[ridx][m]==target)
+        {
+            return true;
+        }
+
+        if(target<nums[ridx][m])
+        {
+            hi = m-1;
+        }
+        else
+        {
+            lo = m+1;
+        }
+    }
+    return false;
+}
+
+
+
+output:
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+Output: true
+
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+Output: false
+
+
+
+Method2:
+==========
+
+   bool searchMatrix(vector<vector<int> > &matrix, int target) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        int l = 0, r = m * n - 1;
+        while (l != r){
+            int mid = (l + r - 1) >> 1;
+            if (matrix[mid / m][mid % m] < target)
+                l = mid + 1;
+            else 
+                r = mid;
+        }
+        return matrix[r / m][r % m] == target;
+    }

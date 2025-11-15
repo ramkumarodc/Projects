@@ -1,0 +1,4 @@
+/mnt/d/vscode/cpp/string/build/CMakeFiles/rebuild_cache.dir
+/mnt/d/vscode/cpp/string/build/CMakeFiles/edit_cache.dir
+/mnt/d/vscode/cpp/string/build/CMakeFiles/func1.dir
+/mnt/d/vscode/cpp/string/build/CMakeFiles/string.dir

@@ -1,0 +1,115 @@
+51. N-Queens
+bool isvalid(vector<string> &tmp, int n, int r, int c )
+{
+    for(int row=r; row>=0; row--)
+    {
+        if(tmp[row][c] == 'Q')
+        {
+            return false;
+        }
+    }
+
+    for(int row=r, col=c; row>=0 && col>=0; row--,col--)
+    {
+        if(tmp[row][col]=='Q')
+        {
+            return false;
+        }
+    }
+    for(int row=r, col=c; row>=0 && col<n; row--,col++)
+    {
+        if(tmp[row][col]=='Q')
+        {
+            return false;
+        }
+    }
+    return true;
+}
+void solve(vector<vector<string>> &op, vector<string> &tmp,int  n, int r)
+{
+    if(n==r)
+    {
+        op.push_back(tmp);
+        return;
+    }
+    
+    for(int c=0; c<n; c++)
+    {
+        if(isvalid(tmp, n , r , c))
+        {
+            tmp[r][c] = 'Q';
+            solve(op,tmp,n, r+1);
+            tmp[r][c] = '.';
+        }
+    }      
+}
+vector<vector<string>> solveNQueens(int n) 
+{
+    vector<vector<string>> op;
+    vector<string>  tmp(n, string(n,'.'));
+    vector<int>f_col(n,1);
+    vector<int>f_45(2*n-1)
+    solve(op, tmp, n, 0);
+    return op;
+}
+==============================================================================
+ bool isvalid(vector<string> &tmp, int n, int r, int c, vector<int>& f_col )
+    {
+        if(f_col[c]==0)
+        {
+            return false;
+        }
+
+
+        int f_45 = c;
+        int f_135 = c;       
+        for(int row = r-1; row>=0; row--)
+        {
+            f_45--;
+            f_135++;
+            if( (f_45 >=0 && tmp[row][f_45] == 'Q') || (f_135<n && tmp[row][f_135] == 'Q'))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    void solve(vector<vector<string>> &op, vector<string> &tmp,int  n, int r, vector<int>& fCol)
+    {
+        if(n==r)
+        {
+            op.push_back(tmp);
+            return;
+        }
+        
+        for(int c=0; c<n; c++)
+        {
+            if(isvalid(tmp, n , r , c, fCol))
+            {
+                tmp[r][c] = 'Q';
+                fCol[c] = 0;
+                solve(op,tmp,n, r+1, fCol);
+                tmp[r][c] = '.';
+                fCol[c]= 1;
+            }
+        }      
+    }
+    vector<vector<string>> solveNQueens(int n) 
+    {
+        vector<vector<string>> op;
+        vector<string>  tmp(n, string(n,'.'));
+        vector<int> f_col(n, 1);
+        solve(op, tmp, n, 0, f_col);
+        return op;
+    }
+	
+	
+
+
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+Example 2:
+
+Input: n = 1
+Output: [["Q"]]

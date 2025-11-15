@@ -1,0 +1,95 @@
+17. Letter Combinations of a Phone Number
+
+Method 1:
+
+vector<string> letterCombinations(string digits) 
+{  
+    vector<string> srr= {"", "", "abc","def","ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    
+
+    vector<string> strList;
+    if(!digits.size())
+    return strList;
+    
+    strList.push_back("");
+
+    for(int i=0; i<digits.size(); i++)
+    {
+        int digiVal = digits[i]-'0';
+
+        string str = srr[digiVal];
+
+        while(strList.front().length()==i)
+        {
+            string s = strList.front();
+            strList.erase(strList.begin());
+            for(int j=0; j<str.size(); j++)
+            {
+                strList.push_back(s+str[j]);
+            }
+        }
+
+    }
+    return strList;        
+}
+==================================================================
+Method 2:
+=========
+A version without first loop, but same time complexity. Both are single queue BFS
+vector<string> letterCombinations(string digits) 
+{  
+    vector<string> srr= {"", "", "abc","def","ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    vector<string> strList;
+    if(!digits.size())
+    return strList;
+    
+    strList.push_back("");
+
+    while(strList.front().length()!=digits.size())
+    {
+        int digiVal = digits[strList.front().length()]-'0';
+        string str = srr[digiVal];
+
+        string s = strList.front();
+        strList.erase(strList.begin());
+        for(int j=0; j<str.size(); j++)
+        {
+            strList.push_back(s+str[j]);
+        }
+    }
+    return strList;        
+}
+==================================================================
+method 3:
+Recursive
+
+void helper(string& digits, vector<string>& srr, vector<string>& op, int idx, string str)
+{
+    if(str.length() == digits.length())
+    {
+        op.push_back(str);
+    }
+    else
+    {
+        int val = digits[idx]-'0';
+        string s = srr[val];
+        for(int i=0; i<s.size(); i++)
+        {
+            helper(digits, srr, op, idx+1, str+s[i]);
+        }
+    }
+}
+vector<string> letterCombinations(string digits) 
+{  
+    vector<string> srr= {"", "", "abc","def","ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    vector<string> strList;
+    if(!digits.size())
+        return strList;
+    
+    helper(digits, srr, strList, 0,"");
+    return strList;        
+}
+
+==================================================================

@@ -1,0 +1,74 @@
+4. Median of Two Sorted Arrays
+double findMedianSortedArrays(vector<int>& numsA, vector<int>& numsB)
+{
+    int lenA = numsA.size();
+    int lenB = numsB.size();
+
+    if(lenB<lenA)
+    {
+        return findMedianSortedArrays(numsB, numsA);
+    }
+
+    int l = 0;
+    int r = lenA-1;
+    int total = lenA+lenB;
+    int half = total/2;
+
+//A= 123 45
+//B= 123 45678
+//Total = 13 half = 6
+    int Aleft,Aright,Bleft,Bright;
+    while(true)
+    {
+        int m1 = (l+r)/2;
+        int m2 = half-m1-2;
+        if(r<0)
+        {
+            m1 = r;
+            m2 = half-1;
+        }
+
+        if(m1 >=0) Aleft= numsA[m1];    else Aleft = INT_MIN;
+        if(m1+1 < lenA) Aright = numsA[m1+1];  else Aright = INT_MAX;
+        if(m2 >=0) Bleft = numsB[m2];           else Bleft = INT_MIN;   
+        if(m2+1  < lenB) Bright = numsB[m2+1]; else Bright = INT_MAX;
+
+		if(Aleft<=Bright && Bleft <=Aright) //left window with correct elements
+		{
+			//odd
+			if(total%2)
+			{
+				return min(Aright, Bright);
+			}
+			else // even
+			{
+				return (float)(max(Aleft,Bleft)+min(Aright,Bright))/2;
+			}
+		}
+		else
+		{
+			if(Aleft >Bright)
+			{
+				r = m1-1;
+			}
+			else
+			{
+				l = m1+1;
+			}
+		}
+	}
+	return 0;
+}
+
+
+output:
+Example 1:
+
+Input: nums1 = [1,3], nums2 = [2]
+Output: 2.00000
+Explanation: merged array = [1,2,3] and median is 2.
+Example 2:
+
+Input: nums1 = [1,2], nums2 = [3,4]
+Output: 2.50000
+Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.

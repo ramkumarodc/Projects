@@ -1,0 +1,41 @@
+39. Combination Sum
+
+void combination(vector<int>& candidates, int target, int idx,  vector<vector<int>> &op, vector<int> &tmp, int sum)
+{
+    if(sum > target)
+    {
+        return;
+    }
+    else if(sum == target)
+    {
+        op.push_back(tmp);
+    }
+    else
+    {
+        for(int i=idx; i<candidates.size(); i++)
+        {
+            tmp.push_back(candidates[i]);
+            combination(candidates, target, i, op, tmp, sum+candidates[i]);
+            tmp.pop_back();
+        }
+    }
+}
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) 
+{
+    vector<vector<int>> op;
+    vector<int> tmp;
+    combination(candidates, target, 0, op, tmp, 0);
+    return op;
+}
+
+
+int main()
+{
+    vector<int> candidates = {2,3,5};
+    int target = 8;
+    vector<vector<int>> op;
+    vector<int> tmp;
+    combination(candidates, target, 0, 0, op, tmp);
+
+    return 0;
+}

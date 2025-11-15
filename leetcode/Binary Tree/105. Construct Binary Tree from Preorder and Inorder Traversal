@@ -1,0 +1,30 @@
+105. Construct Binary Tree from Preorder and Inorder Traversal
+
+TreeNode* helper(int preIdx, int inStart, int inEnd, vector<int>& preorder, vector<int>& inorder)
+{
+    if(preIdx >=preorder.size() || inStart > inEnd)
+    {
+        return nullptr;
+    }
+
+    TreeNode* node = new TreeNode(preorder[preIdx]);
+    int inIndex = -1;
+    for(int i =0; i<inorder.size(); i++)
+    {
+        if(preorder[preIdx] == inorder[i])
+        {
+            inIndex=i;
+            break;
+        }
+    } 
+    node->left = helper(preIdx+1, inStart, inIndex-1, preorder, inorder);
+
+    int numsOnLeft = inIndex - inStart;
+    int rightNodePos = preIdx+ numsOnLeft+ 1;
+    node->right = helper(rightNodePos, inIndex+1, inEnd,preorder, inorder );
+    return node;
+}
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
+{
+    return  helper(0,0,inorder.size()-1,preorder, inorder);
+}
